@@ -1,0 +1,9 @@
+# Unified AI Face + Cinematic Hand FX System
+# Install with: pip install -r requirements.txt
+
+opencv-python>=4.8.0
+numpy>=1.24.0
+mediapipe>=0.10.0
+
+# Optional — deep face encoder (improves recognition accuracy)
+# tensorflow>=2.12.0   # uncomment if you have a GPU or fast CPU
