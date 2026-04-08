@@ -230,7 +230,7 @@ class MultiFaceOverlay:
     Call .render(frame, active_faces) each frame.
     """
 
-    MAX_FACES = 2
+    MAX_FACES = 5
 
     def __init__(self, frame_w: int, frame_h: int):
         self._W = frame_w

@@ -68,9 +68,6 @@ from flight_sim   import FlightSimulator
 from hand_flight_controller import HandFlightController, HandControlData
 from game.asteroid_dodge    import AsteroidDodge
 
-# ── Special User Effect ────────────────────────────────────────────────────────
-from special_user_effect import SpecialUserController
-
 
 try:
     from core.multitask_model import MultitaskModel
@@ -318,7 +315,7 @@ class FaceStatusUI:
 class UnifiedSystem:
 
     def __init__(self, args):
-        print("\n[System] Starting Unified AI Face + Hand FX System (v2 — Yoke+Flight)…\n")
+        print("\n[System] Starting Unified AI Face + Hand FX System By @f1qxzz\n")
 
         self.cap = cv2.VideoCapture(args.camera)
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH,  1280)
@@ -377,21 +374,6 @@ class UnifiedSystem:
         self._hand_ctrl_data = HandControlData()
         self.asteroid_game   = AsteroidDodge(self.W, self.H)
 
-        # ── Special User Effect (Afna Feyza Chalisa P) ─────────────────────────
-        self.special_user = SpecialUserController()
-
-        self.debug         = args.debug
-        self.screenshot_n  = 0
-        self._fps_buf      = []
-        self._fps_display  = 0.0
-        self._low_res_mode = False
-        self._frame_count  = 0
-        self._prev_frame_t = time.time()
-        self._last_hands   = []
-        self._global_ph    = 0.0
-        self._last_gesture = "OTHER"
-        self._last_landmarks = None
-
         # Mode flags
         self._canvas_mode     = False
         self._game_mode       = False
@@ -399,6 +381,19 @@ class UnifiedSystem:
         self._flight_mode     = False   # dual-hand yoke
         self._hand_flight_mode = False  # NEW: single-hand mode
         self._asteroid_mode   = False   # NEW: asteroid dodge
+
+        # ── Runtime state ────────────────────────────────────────────────
+        self.debug            = getattr(args, "debug", False)
+        self._prev_frame_t    = time.time()
+        self._global_ph       = 0.0
+        self._frame_count     = 0
+        self._fps_buf         = []
+        self._fps_display     = 0.0
+        self._low_res_mode    = False
+        self._last_hands      = []
+        self._last_gesture    = "OTHER"
+        self._last_landmarks  = None
+        self.screenshot_n     = 0
 
         print("[Camera]  OK")
         print("[Face]    Running  (max 5) + AuraFX + StatusUI")
@@ -419,10 +414,6 @@ class UnifiedSystem:
             if self.mirror:
                 frame = cv2.flip(frame, 1)
 
-            if self._low_res_mode:
-                frame = cv2.resize(frame,(self.W//2,self.H//2))
-                frame = cv2.resize(frame,(self.W,self.H))
-
             dt = min(t0 - self._prev_frame_t, 0.1)
             self._prev_frame_t = t0
             self._global_ph   += dt
@@ -430,13 +421,6 @@ class UnifiedSystem:
 
             active_faces = self._run_face_pipeline(frame)
             self.face_aura.update_and_draw(frame, active_faces, dt)
-
-            # ── Special User Effect (Afna Feyza Chalisa P) ────────────────────
-            active_tids = [f["track_id"] for f in active_faces]
-            self.special_user.update(dt, active_tids)
-            for face in active_faces:
-                self.special_user.try_trigger(face)
-            self.special_user.draw(frame)
 
             # Face status UI (flicker-smoothed)
             stable_count = self.face_status_ui.update(len(active_faces))
@@ -484,7 +468,7 @@ class UnifiedSystem:
             self._update_fps(elapsed)
             self._fps_throttle(elapsed)
 
-            cv2.imshow("AI Face + Hand System", frame)
+            cv2.imshow("AI Face + Hand System @f1qxzz", frame)
 
             # ── Read key (raw = unmasked, for arrow-key detection) ────────
             raw = cv2.waitKey(1)

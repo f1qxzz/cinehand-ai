@@ -17,7 +17,7 @@ from typing import Dict, Optional
 
 # ── UI State (also imported by ui layer) ──────────────────────────────────────
 class FaceUIState(Enum):
-    SCANNING  = auto()
+    SCANNING  = auto() 
     VERIFIED  = auto()
     UNKNOWN   = auto()
 
@@ -101,7 +101,7 @@ class IdentityCache:
     At most MAX_FACES active tracks are retained.
     """
 
-    MAX_FACES = 2
+    MAX_FACES = 5
 
     def __init__(self):
         self._cache: Dict[int, TrackState] = {}

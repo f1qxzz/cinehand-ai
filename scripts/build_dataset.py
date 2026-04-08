@@ -26,10 +26,6 @@ from core.encoder import FaceEncoder
 
 # ── Identity display names ────────────────────────────────────────────
 IDENTITY_CONFIG = {
-    "afna": {
-        "display_name": "Afna Feyza Chalisa P",
-        "role": "Special Person",
-    },
     "f1qxzz": {
         "display_name": "f1qxzz (Developer)",
         "role": "System Owner",

@@ -12,22 +12,18 @@ import numpy as np
 from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass
 
-
+# ══════════════════════════════════════════════════════════════════════
+# ADDED: Define MatchResult so the script knows what it is
 @dataclass
 class MatchResult:
-    identity_id: str           # folder name  (e.g. "afna")
-    display_name: str          # pretty name  (e.g. "Afna Feyza Chalisa P")
-    role: str                  # e.g. "Special Person"
-    similarity: float          # 0–1
+    identity_id: str
+    display_name: str
+    role: str
+    similarity: float
     is_known: bool
-
 
 # ══════════════════════════════════════════════════════════════════════
 IDENTITY_MAP = {
-    "afna": {
-        "display_name": "Afna Feyza Chalisa P",
-        "role": "Special Person",
-    },
     "f1qxzz": {
         "display_name": "f1qxzz (Developer)",
         "role": "System Owner",
@@ -111,7 +107,6 @@ class IdentityMatcher:
                 best_id = identity_id
 
         if best_sim < self.threshold_reject:
-            result = UNKNOWN_IDENTITY
             result = MatchResult("unknown", "Unknown User", "Guest", best_sim, False)
             return result
 
