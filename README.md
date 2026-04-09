@@ -16,7 +16,7 @@ oleh gerakan tangan menggunakan kamera webcam biasa.
 | Face ID–style UI | Animasi scanning oval → kartu nama verified |
 | Identity locking | Setelah 5 frame konsisten → verified, enkoding berhenti |
 | Wajah tidak dikenal | UI merah "Unknown User / Guest" |
-| Tambah wajah baru | Cukup tambah foto di `data/faces/<id>/` + tekan R |
+| Tambah wajah baru | `python scripts/enroll.py --identity <id>` dari webcam |
 
 ### ✋ Hand Tracking & Gesture Engine
 | Gesture | Simbol | Aksi |
@@ -111,6 +111,46 @@ setup.bat
 ### Manual
 ```bash
 pip install -r requirements.txt
+
+# Daftarkan wajah via webcam (WAJIB sebelum pertama kali pakai)
+python scripts/enroll.py --identity f1qxzz
+
+# Atau dengan nama & role kustom
+python scripts/enroll.py --identity user1 --display "Username" --role Member
+```
+
+---
+
+## 👤 Cara Mendaftarkan Wajah (Enrollment)
+
+> **Tanpa enrollment, semua wajah tampil lingkaran merah "Unknown".**  
+> File `data/encodings.pkl` harus ada agar face recognition berjalan.
+
+### Daftar cepat (webcam langsung):
+```bash
+python scripts/enroll.py --identity f1qxzz
+```
+
+Kontrol saat jendela terbuka:
+
+| Tombol | Fungsi |
+|--------|--------|
+| `SPASI` | Mulai / jeda capture |
+| `Q` / `ESC` | Selesai & simpan otomatis |
+
+Tips akurasi tinggi:
+- Hadap kamera lurus, lalu pelan-pelan geser kiri/kanan/atas/bawah
+- Target minimal **60 sample** (default), idealnya 80–100
+- Pastikan pencahayaan cukup
+
+### Daftar user tambahan:
+```bash
+python scripts/enroll.py --identity user1 --display "Username" --role Member --count 80
+```
+
+### Encode dari folder foto (cara lama):
+```bash
+# Taruh foto di data/faces/<identity>/*.jpg lalu:
 python scripts/build_dataset.py
 ```
 
@@ -203,7 +243,8 @@ face+cinematic_hand/
 │   └── encodings.pkl             ← Di-build oleh setup
 │
 ├── scripts/
-│   └── build_dataset.py          ← Encode semua foto → encodings.pkl
+│   ├── enroll.py                 ← ⭐ Daftar wajah langsung dari webcam
+│   └── build_dataset.py          ← Encode foto dari folder → encodings.pkl
 │
 ├── hand_landmarker.task          ← MediaPipe model file
 ├── requirements.txt

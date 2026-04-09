@@ -341,7 +341,10 @@ class UnifiedSystem:
             threshold_accept = args.threshold,
         )
         if not self.matcher._db:
-            print("[Face]    WARNING: No encodings — detection-only, all faces = 'Unknown'")
+            print("=" * 60)
+            print("[Face]  WARNING: TIDAK ADA ENCODINGS — semua wajah tampil MERAH")
+            print("[Face]  Jalankan dulu: python scripts/enroll.py --identity f1qxzz")
+            print("=" * 60)
         self.sort     = SORTTracker(max_age=10, min_hits=2)
         self.id_cache = IdentityCache()
 
@@ -353,7 +356,7 @@ class UnifiedSystem:
         self.face_aura      = FaceAuraFX()
         self.face_status_ui = FaceStatusUI()          # NEW
 
-        self.hand_tracker   = HandTracker(max_hands=2, min_conf=0.45)
+        self.hand_tracker   = HandTracker(max_hands=4, min_conf=0.45)
         self.gesture_engine = GestureEngine()
         self.cursor         = CursorController()
         self.hand_fx        = HandFX(low_particle_mode=False)

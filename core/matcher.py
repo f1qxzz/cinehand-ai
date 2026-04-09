@@ -23,11 +23,22 @@ class MatchResult:
     is_known: bool
 
 # ══════════════════════════════════════════════════════════════════════
+# ── Registered users ──────────────────────────────────────────────────────────
+# Add new users here. Format:
+#   "folder_name": {"display_name": "Name shown on HUD", "role": "Role shown on HUD"},
+# The folder_name must match the subfolder under data/faces/<folder_name>/
+# After adding, run: python scripts/build_dataset.py
+# ──────────────────────────────────────────────────────────────────────────────
 IDENTITY_MAP = {
     "f1qxzz": {
-        "display_name": "f1qxzz (Developer)",
-        "role": "System Owner",
+        "display_name": "f1qxzz",
+        "role": "Developer",
     },
+    # Example — uncomment and fill in to add more users:
+    # "afna": {
+    #     "display_name": "Afna Feyza",
+    #     "role": "Member",
+    # },
 }
 
 UNKNOWN_IDENTITY = MatchResult(

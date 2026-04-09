@@ -24,12 +24,19 @@ from core.face_detector import FaceDetector
 from core.encoder import FaceEncoder
 
 
-# ── Identity display names ────────────────────────────────────────────
+# ── Registered users ──────────────────────────────────────────────────────────
+# Add new users here before running this script.
+# "folder_name" must match the subfolder name under data/faces/
+# ──────────────────────────────────────────────────────────────────────────────
 IDENTITY_CONFIG = {
     "f1qxzz": {
-        "display_name": "f1qxzz (Developer)",
-        "role": "System Owner",
+        "display_name": "f1qxzz",
+        "role": "Developer",
     },
+    # "afna": {
+    #     "display_name": "Afna Feyza",
+    #     "role": "Member",
+    # },
 }
 
 
@@ -58,6 +65,7 @@ def build_dataset(
 
     for id_dir in identity_dirs:
         identity_id = id_dir.name
+
         images      = list(id_dir.glob("*.jpg")) + list(id_dir.glob("*.png")) + \
                       list(id_dir.glob("*.jpeg"))
 
@@ -110,10 +118,10 @@ def build_dataset(
         pickle.dump(db, f)
     print(f"\n[Build] Saved {sum(len(v) for v in db.values())} embeddings → {out_enc}")
 
-    # Merge with IDENTITY_CONFIG
+    # Merge with IDENTITY_CONFIG (fallback for unlisted users)
     meta = {}
     for k in db:
-        meta[k] = IDENTITY_CONFIG.get(k, {"display_name": k, "role": "Unknown"})
+        meta[k] = IDENTITY_CONFIG.get(k, {"display_name": k, "role": "Member"})
     with open(out_id, "w") as f:
         json.dump(meta, f, indent=2)
     print(f"[Build] Saved identities metadata → {out_id}")
