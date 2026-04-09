@@ -1,5 +1,0 @@
-# Ignore semua isi folder data
-data/*
-
-# Kecualikan file ini (biar folder tetap ada)
-!data/.gitkeep
